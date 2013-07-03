@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>This Is The Name Of Your Specification</title>
+    <title>The WebSocket Server API</title>
     <meta charset='utf-8'>
     <script src='http://darobin.github.com/respec/builds/respec-w3c-common.js' class='remove'></script>
     <script class='remove'>
       var respecConfig = {
           // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
-          specStatus:           "ED",
+          specStatus:           "unofficial",
           
           // the specification's short name, as in http://www.w3.org/TR/short-name/
-          shortName:            "xxx-xxx",
+          shortName:            "websocket-server",
 
           // if your specification has a subtitle that goes below the main
           // formal title, define it here
@@ -37,8 +37,8 @@
           // editors, add as many as you like
           // only "name" is required
           editors:  [
-              { name: "Your Name", url: "http://example.org/",
-                company: "Your Company", companyURL: "http://example.com/" },
+              { name: "Alexandre Morgaut", url: "http://about.me/amorgaut",
+                company: "4D", companyURL: "http://4D.com/" },
           ],
 
           // authors, add as many as you like. 
@@ -51,13 +51,13 @@
           //],
           
           // name of the WG
-          wg:           "In Charge Of This Document Working Group",
+          wg:           "Client and Server JavaScript API Community Group",
           
           // URI of the public WG page
-          wgURI:        "http://example.org/really-cool-wg",
+          wgURI:        "http://w3c.org/community/jseverywhere",
           
           // name (without the @w3c.org) of the public mailing to which comments are due
-          wgPublicList: "spec-writers-anonymous",
+          wgPublicList: "public-jseverywhere",
           
           // URI of the patent status for this WG, for Rec-track documents
           // !!!! IMPORTANT !!!!
@@ -70,14 +70,15 @@
   </head>
   <body>
     <section id='abstract'>
-      This is the abstract for your specification.
+      This specification defines an API that enables Packaged Web Applications and Server-Side JavaScript platforms to manage connections through the WebSocket protocol (defined by the IETF) for two-way communication with a remote client.
     </section>
     
     <section>
-      <h2>Your Title</h2>
-      <p>
-        Your text...
-      </p>
+      <h2>Introduction</h2>
+      <p><i>This section is non-normative.</i></p>
+      <p>To enable Web applications to maintain bidirectional
+  communications with client-side processes, this specification
+  introduces the <code><a href="#websocketserver">WebSocketServer</a></code> interface.</p>
     </section>
     
     <section class='appendix'>
