@@ -10,7 +10,7 @@ This specification reuse concepts and content from the following W3C recommendat
 
 * [The WebSocket API](http://www.w3.org/TR/websockets/): compatible with [WebSocket](http://www.w3.org/TR/websockets/#websocket) the Interface and its JS Binding
 * [Web Workers](http://www.w3.org/TR/workers/): multiple connections handling via ports as in [SharedWorker](http://www.w3.org/TR/workers/#shared-workers-and-the-sharedworker-interface) interface
-* [Raw Socket API](http://www.w3.org/TR/raw-sockets/): Packages Web App Security context
+* [Raw Socket API](http://www.w3.org/TR/raw-sockets/): Packages Web App Security context and [TCPServerSocket](http://raw-sockets.sysapps.org/#interface-tcpserversocket) Interface
 * [HTML5 Web Messaging](http://www.w3.org/TR/webmessaging): handling port and origin
 
 In Short, the proposed `WebSocketServer` interface looks like the `WebSocket`interface but messaging behave with the `SharedWorker` port mechanism.
