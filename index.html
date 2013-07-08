@@ -98,11 +98,16 @@
         <p>This specification relies on several other underlying specifications.</p>
         <dl>
           <dt>HTML</dt>
-          <dd><p>Many fundamental concepts from HTML are used by this 
-            specification. [[!HTML]]</p></dd>
+          <dd><p>Many fundamental concepts from HTML5 are used by this 
+            specification. [[!HTML5]]</p></dd>
           <dt>WebIDL</dt>
           <dd><p>The IDL blocks in this specification use the semantics of the 
             WebIDL specification. [[!WEBIDL]]</p></dd>
+          <dt>The Web Sockets API</dt>
+          <dd><p>The WebSocketServer interface is based on the client WebSocket one [[!WEBSOCKETS-API]]</p></dd>
+          <dt>HTML5 Web Messaging</dt>
+          <dd><p>The multiple incomming connection on the Web socket server are managed by the port
+            mechanism defined in the HTML5 Web Messaging specification [[!POSTMSG]]</p></dd>
         </dl>
       </section>
     </section>
@@ -111,25 +116,25 @@
     <!----------------------------- Terminology ---------------------------------->
     <section>
       <h2>Terminology</h2>
-      <p>The <code><a href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler"> 
-         EventHandler</a></code> interface represents a callback used for event handlers 
+      <p>The <dfn><a href="http://www.w3.org/TR/html5/webappapis.html#eventhandler">EventHandler</a></dfn> interface represents a callback used for event handlers 
          as defined in [[!HTML5]].
       </p>
       
-      <p>The concepts <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#queue-a-task"> 
-         queue a task</a></dfn> and <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event"> 
+      <p>The concepts <dfn><a href="http://www.w3.org/TR/html5/webappapis.html#queue-a-task"> 
+         queue a task</a></dfn> and <dfn><a href="http://www.w3.org/TR/html5/webappapis.html#fire-a-simple-event"> 
          fire a simple event</a></dfn> are defined in [[!HTML5]].
       </p>
             
-      <p>The terms <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"> 
-         event handler</a></dfn> and <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type"> 
+      <p>The terms <dfn><a href="http://www.w3.org/TR/html5/webappapis.html#event-handlers"> 
+         event handler</a></dfn> and <dfn><a href="http://www.w3.org/TR/html5/webappapis.html#event-handler-event-type"> 
          event handler event types</a></dfn> are defined in [[!HTML5]].
       </p>
       
-      <p>The <a href="http://dev.w3.org/html5/spec/webappapis.html#task-source">task source</a> 
+      <p>The <a href="http://www.w3.org/TR/html5/webappapis.html#task-source">task source</a> 
          for all <span title="concept-task">tasks</span> 
          <span title="queue a task">queued</span> in this specification is the 
-         <a href="http://www.w3.org/TR/websockets/#websocket-task-source">WebSocket task source</a>.
+         <a href="http://www.w3.org/TR/websockets/#websocket-task-source">WebSocket task source</a>
+         defined in [[!WEBSOCKETS-API]].
       </p>     
       
       <p>The term DOM is used to refer to the API set made available to
@@ -142,15 +147,6 @@
         being retrieved (e.g. by author script), and is said to be 
         <em>setting</em> when a new value is assigned to it.</p>
       
-    </section>
-
-    <!----------------------------- Infrastructure ---------------------------------->
-    <section>
-      <h2>Infrastructure</h2>
-      <section>
-        <h2>Dependencies</h2>
-        <p>The <a href="http://www.whatwg.org/specs/web-apps/current-work/#messageport">MessagePort</a> interface is defined in the HTML specification. [[!HTML]]</p>
-      </section>
     </section>
 
     <!------------------------ Security and privacy ------------------------------>
@@ -200,7 +196,9 @@
       </pre>
       <dl title="[Constructor (DOMString url, optional DOMString socketServerID, optional DOMString protocol)] interface WebSocketServer : EventTarget" class="idl">
         <dt>readonly attribute DOMString url</dt>
-		<dd></dd>
+		<dd><p class="issue">TBD: Coming from the <dfn><a href="http://www.w3.org/TR/websockets/#the-websocket-interface">WebSocket</a></dfn>
+		  interface. Used on the Server Interface to specified the listened URI</p>
+        </dd></dd>
 
 		<dt>[ready state]const unsigned short CONNECTING = 0</dt>
 		<dd>The connection has not yet been established.</dd>
@@ -260,20 +258,20 @@
 
 		<dt>attribute EventHandler onclose</dt>
 		<dd>
-		  <p class="issue">TBD: Coming from the <dfn><code>WebSocket</code></dfn> interface. To be 
-		  specified if required</p>
+		  <p class="issue">TBD: Coming from the <dfn><a href="http://www.w3.org/TR/websockets/#the-websocket-interface">WebSocket</a></dfn>
+		  interface. To be  specified if required</p>
 		</dd>
 
 		<dt>readonly attribute DOMString extensions</dt>
 		<dd>
-		  <p class="issue">TBD: Coming from the <dfn><code>WebSocket</code></dfn> interface. To be 
-		  specified if required</p>
+		  <p class="issue">TBD: Coming from the <dfn><a href="http://www.w3.org/TR/websockets/#the-websocket-interface">WebSocket</a></dfn>
+		  interface. To be specified if required</p>
 		</dd>
 
 		<dt>readonly attribute DOMString protocol</dt>
 		<dd>
-		  <p class="issue">TBD: Coming from the <dfn><code>WebSocket</code></dfn> interface. To be 
-		  specified if required</p>
+		  <p class="issue">TBD: Coming from the <dfn><a href="http://www.w3.org/TR/websockets/#the-websocket-interface">WebSocket</a></dfn>
+		  interface. To be  specified if required</p>
 		</dd>
 
 		<dt>void close()</dt>
@@ -282,9 +280,9 @@
         </dd>
 		
         <dt>[messaging]attribute EventHandler onmessage</dt>
-        <dd>
-          <p>Event handler that corresponds to the <dfn><code>message</code></dfn> event, which is 
-            fired repeatedly and asynchronously after the TCPServerSocket object has been created, every time there is an error on an incoming connection attempt. The data attribute of the event passed to the onconnecterror handler will have a description of the kind of error.</dd>
+        <dd><p class="issue">TBD: Coming from the <dfn><a href="http://www.w3.org/TR/websockets/#the-websocket-interface">WebSocket</a></dfn>
+		  interface. Expected to be used to handle messages from whatever connection. May be source of security issues.</p>
+        </dd>
 
         <dt>attribute DOMString binaryType</dt>
         <dd>
@@ -301,12 +299,7 @@
 
         <dt>void send(ArrayBufferView data)</dt>
         <dd>        
-          <p>Sends data on the given UDP socket to the given address and port.</p>          
-          <p>If remoteAddress and remotePort arguments are not given or null the 
-             destination is the default address and port given by the UDPSocket 
-             constructor's options argument's <code>remoteAddress</code> and 
-             <code>remotePort</code> fields.</p>       
-        
+          <p>Sends data on the given Web socket to all the connected clients.</p>
           <dl class='parameters'>
              <dt>(DOMString or Blob or ArrayBuffer or ArrayBufferView) data</dt>
              <dd>
@@ -332,6 +325,8 @@
       <p>The WebSocket protocol specification defines Ping and Pong frames that can be used for 
         keep-alive, heart-beats, network status probing, latency instrumentation, and so forth.
         These are not currently exposed in the API.</p>
+        <p class="issue">TBD: Section coming from The Web Sockets API 
+        [[!WEBSOCKETS-API]]. To be  specified if required</p>
     </section>
     
     <!-- ----------------------- Parsing WebSocket URLs ----------------------------- -->
@@ -341,19 +336,61 @@
         from a string <var title="">url</var> are as follows. These steps return either a 
         <var title="">host</var>, a <var title="">port</var>, a <var title="">resource name</var>,
         and a <var title="">secure</var> flag, or they fail.</p>
-      <p>TO BE DONE</p>
+        <p class="issue">TBD: Section coming from The Web Sockets API 
+        [[!WEBSOCKETS-API]]. To be  specified if required</p>
     </section>
     
     <!-- -------------------------- Event definitions -------------------------------- -->
     <section id='event-definitions'>
       <h2>Event definitions</h2>
       <p>TO BE DONE</p>
+      <section id='connect-event'>
+        <h2><dfn><code>connect</code></dfn> Event Interface</h2>
+        <dl class="idl" title="interface connect : MessageEvent {">
+          <dt>readonly attribute DOMString cookies</dt>
+          <dd>
+            <p>Cookies from the HTTP connection which initiated the Web Socket connection</p>
+            <p>May be used to bind the message to an existing session</p>
+          </dd>
+          <dt>readonly attribute DOMString authorization</dt>
+          <dd>
+            <p>Content of the Authorization header of the HTTP connection which initiated the Web 
+              Socket connection</p>
+            <p>May be used to authenticate the user and provide related permissions</p>
+          </dd>
+          <dt>readonly attribute DOMString remoteURI</dt>
+          <dd></dd>
+          <dt>readonly attribute MessagePort ports</dt>
+          <dd>First port (index 0) is used to send and receive messages through a specific connection</dd>
+        };</dl>
+      </section>
+      <section id='message-event'>
+        <h2><dfn><code>message</code></dfn> Event Interface</h2>
+        <dl class="idl" title="interface message : MessageEvent {">
+          <dt>readonly attribute DOMString cookies</dt>
+          <dd>
+            <p>Cookies from the HTTP connection which initiated the Web Socket connection</p>
+            <p>May be used to detect from which connection the message come from and to bind the 
+              message to an existing session</p>
+          </dd>
+          <dt>readonly attribute DOMString authorization</dt>
+          <dd>
+            <p>Content of the Authorization header of the HTTP connection which initiated the Web 
+              Socket connection</p>
+            <p>May be used to authenticate the user and provide related permissions</p>
+          </dd>
+          <dt>readonly attribute DOMString remoteURI</dt>
+          <dd></dd>
+          <dd></dd>
+        };</dl>
+      </section>
     </section>
     
     <!-- -------------------------- Garbage collection -------------------------------- -->
     <section id='garbage-collection'>
       <h2>Garbage collection</h2>
-      <p>TO BE DONE</p>
+      <p class="issue">TBD: Section coming from The Web Sockets API 
+        [[!WEBSOCKETS-API]]. To be  specified if required</p>
     </section>
     
     <!-- ---------------------------- Appendix ---------------------------------- -->
