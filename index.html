@@ -295,8 +295,8 @@
             value. Otherwise, throw a SyntaxError exception.</p>
             
             <p class="issue">As <dfn><code>WebSocketServer</code></dfn> can be connected to multiple
-            sockets, this property should also be at the <dfn><code>port</code></dfn> level and 
-            depend on each socket related <dfn><code>port.onmessage</code></dfn> event</p>
+            client, this property should also be at the <dfn><code>port</code></dfn> level and 
+            depend on each connection related <dfn><code>port.onmessage</code></dfn> event</p>
         </dd>
 
         <dt>void send(ArrayBufferView data)</dt>
