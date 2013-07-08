@@ -18,7 +18,7 @@ In Short, the proposed `WebSocketServer` interface looks like the `WebSocket`int
 
 ##How to use?##
 
-```
+```JavaScript
 var webSocketServer = new WebSocketServer(urlToListen, serverID);
 webSocketServer.onconnect = function handleClient(event) {
 	var port = event.port[0];
