@@ -1,7 +1,7 @@
 #WebSocket Server API#
 
 
-This repository is the home of the [Web Socket Server API specification](http://w3c-jseverywhere.github.io/websocket-server/) being worked on by the [Client and Server JavaScript APIs Community Group](http://w3.org/community/jseverywhere) for Packaged Web apps and Server-Side JS implementations.
+This repository is the home of the [Web Socket Server API specification](http://w3c-jseverywhere.github.io/websocket-server/) being worked on by the [Client and Server JavaScript APIs Community Group](http://w3.org/community/jseverywhere) for Packaged Web apps and Server-Side JS implementations. This API is considered for implementation in [Wakanda Server](http://wakandadb.org)
 
 
 ##Concepts##
