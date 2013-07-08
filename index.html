@@ -136,7 +136,7 @@
         scripts in Web applications, and does not necessarily imply the
         existence of an actual <code>Document</code> object or of any other
         <code>Node</code> objects as defined in the DOM Core
-        specifications. [[!DOM-Core]]</p>
+        specifications. [[!DOM-LEVEL-3-CORE]]</p>
 
       <p>An IDL attribute is said to be <em>getting</em> when its value is
         being retrieved (e.g. by author script), and is said to be 
@@ -198,7 +198,7 @@
         var remoteURI = msgEvent.remoteURI; // ex: "tcp:194.43.12.5:80"
       };
       </pre>
-      <dl title="[Constructor (DOMString url, optional DOMString protocol)] interface WebSocketServer : EventTarget" class="idl">
+      <dl title="[Constructor (DOMString url, optional DOMString socketServerID, optional DOMString protocol)] interface WebSocketServer : EventTarget" class="idl">
         <dt>readonly attribute DOMString url</dt>
 		<dd></dd>
 
@@ -233,6 +233,10 @@
 		    If the connection  is closed, this attribute's value will only increase with each call 
 		    to the <dfn><code>send()</code></dfn> method (the number does not reset to zero once the
 		    connection closes).</p>
+		    
+		  <p class="issue">As <dfn><code>WebSocketServer</code></dfn> can be connected to multiple sockets, this property 
+		  should also be at the <dfn><code>port</code></dfn> level and depend on each socket related 
+		  <dfn><code>port.postMessage()</code></dfn> method</p>
 		</dd>
 
 		<dt>[networking]attribute EventHandler onopen</dt>
@@ -276,6 +280,10 @@
             it was set to. On setting, if the new value is either the string "blob" 
             or the string "arraybuffer", then set the IDL attribute to this new 
             value. Otherwise, throw a SyntaxError exception.</p>
+            
+            <p class="issue">As <dfn><code>WebSocketServer</code></dfn> can be connected to multiple
+            sockets, this property should also be at the <dfn><code>port</code></dfn> level and 
+            depend on each socket related <dfn><code>port.onmessage</code></dfn> event</p>
         </dd>
 
         <dt>void send(ArrayBufferView data)</dt>
@@ -305,7 +313,37 @@
 	  </dl>
    </section> 
     
+    <!-- ----------------------- Ping and Pong frames ----------------------------- -->
+    <section id='ping-and-pong-frames'>
+      <h2>Ping and Pong frames</h2>
+      <p>The WebSocket protocol specification defines Ping and Pong frames that can be used for 
+        keep-alive, heart-beats, network status probing, latency instrumentation, and so forth.
+        These are not currently exposed in the API.</p>
+    </section>
     
+    <!-- ----------------------- Parsing WebSocket URLs ----------------------------- -->
+    <section id='parsing-websocket-urls'>
+      <h2>Parsing WebSocket URLs</h2>
+      <p>The steps to <dfn id="parse-a-websocket-url-s-components">parse a WebSocket URL's components</dfn>
+        from a string <var title="">url</var> are as follows. These steps return either a 
+        <var title="">host</var>, a <var title="">port</var>, a <var title="">resource name</var>,
+        and a <var title="">secure</var> flag, or they fail.</p>
+      <p>TO BE DONE</p>
+    </section>
+    
+    <!-- -------------------------- Event definitions -------------------------------- -->
+    <section id='event-definitions'>
+      <h2>Event definitions</h2>
+      <p>TO BE DONE</p>
+    </section>
+    
+    <!-- -------------------------- Garbage collection -------------------------------- -->
+    <section id='garbage-collection'>
+      <h2>Garbage collection</h2>
+      <p>TO BE DONE</p>
+    </section>
+    
+    <!-- ---------------------------- Appendix ---------------------------------- -->
     <section class='appendix'>
       <h2>Acknowledgements</h2>
       <p>
