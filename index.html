@@ -69,17 +69,242 @@
     </script>
   </head>
   <body>
+    <!-- ---------------------------- Abstract ---------------------------------- -->
     <section id='abstract'>
-      This specification defines an API that enables Packaged Web Applications and Server-Side JavaScript platforms to manage connections through the WebSocket protocol (defined by the IETF) for two-way communication with a remote client.
+      This specification defines an API that enables Packaged Web Applications and 
+      Server-Side JavaScript platforms to manage connections through the WebSocket 
+      protocol (defined by the IETF) for two-way communication with a remote client.
     </section>
     
-    <section>
+    <!-- --------------------------- Introduction ------------------------------- -->
+    <section class="informative">
       <h2>Introduction</h2>
-      <p><i>This section is non-normative.</i></p>
       <p>To enable Web applications to maintain bidirectional
-  communications with client-side processes, this specification
-  introduces the <code><a href="#websocketserver">WebSocketServer</a></code> interface.</p>
+        communications with client-side processes, this specification
+        introduces the <code><a href="#websocketserver">WebSocketServer</a></code>
+        interface.</p>
     </section>
+    
+    <!-- -------------------------- Conformance --------------------------------- -->
+    <section id="conformance">
+      <p>Implementations of the APIs defined in this specification MUST implement 
+         them in a manner consistent with the ECMAScript Bindings defined in the 
+         Web IDL specification [[!WEBIDL]], as this specification uses that 
+         specification and terminology.
+      </p>
+
+      <section id="dependencies">
+        <h3>Dependencies</h3>
+        <p>This specification relies on several other underlying specifications.</p>
+        <dl>
+          <dt>HTML</dt>
+          <dd><p>Many fundamental concepts from HTML are used by this 
+            specification. [[!HTML]]</p></dd>
+          <dt>WebIDL</dt>
+          <dd><p>The IDL blocks in this specification use the semantics of the 
+            WebIDL specification. [[!WEBIDL]]</p></dd>
+        </dl>
+      </section>
+    </section>
+
+
+    <!----------------------------- Terminology ---------------------------------->
+    <section>
+      <h2>Terminology</h2>
+      <p>The <code><a href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler"> 
+         EventHandler</a></code> interface represents a callback used for event handlers 
+         as defined in [[!HTML5]].
+      </p>
+      
+      <p>The concepts <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#queue-a-task"> 
+         queue a task</a></dfn> and <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event"> 
+         fire a simple event</a></dfn> are defined in [[!HTML5]].
+      </p>
+            
+      <p>The terms <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"> 
+         event handler</a></dfn> and <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type"> 
+         event handler event types</a></dfn> are defined in [[!HTML5]].
+      </p>
+      
+      <p>The <a href="http://dev.w3.org/html5/spec/webappapis.html#task-source">task source</a> 
+         for all <span title="concept-task">tasks</span> 
+         <span title="queue a task">queued</span> in this specification is the 
+         <a href="http://www.w3.org/TR/websockets/#websocket-task-source">WebSocket task source</a>.
+      </p>     
+      
+      <p>The term DOM is used to refer to the API set made available to
+        scripts in Web applications, and does not necessarily imply the
+        existence of an actual <code>Document</code> object or of any other
+        <code>Node</code> objects as defined in the DOM Core
+        specifications. [[!DOM-Core]]</p>
+
+      <p>An IDL attribute is said to be <em>getting</em> when its value is
+        being retrieved (e.g. by author script), and is said to be 
+        <em>setting</em> when a new value is assigned to it.</p>
+      
+    </section>
+
+    <!----------------------------- Infrastructure ---------------------------------->
+    <section>
+      <h2>Infrastructure</h2>
+      <section>
+        <h2>Dependencies</h2>
+        <p>The <a href="http://www.whatwg.org/specs/web-apps/current-work/#messageport">MessagePort</a> interface is defined in the HTML specification. [[!HTML]]</p>
+      </section>
+    </section>
+
+    <!------------------------ Security and privacy ------------------------------>
+    <section>
+      <h2>Security and privacy considerations</h2>
+      <p>
+        This API must be only exposed to trusted content.
+      </p>
+      
+    </section> 
+
+    <!------------------------ Interface WebSocketServer ------------------------------>
+    <section>
+      <h2>Interface <a>WebSocketServer</a></h2>
+      <p>The <a>WebSocketServer</a> interface defines attributes and methods for 
+         Web Socket Server communication</p>
+
+      <pre class="example highlight">
+      var webSocketServer = new WebSocketServer(urlToListen, serverID);
+      webSocketServer.onconnect = function handleClient(event) {
+          var port = event.port[0];
+
+          // security related informations
+          var origin = port.origin; // check same origin or CORS access
+          var cookies = port.cookies; // initial HTTP cookies
+          var authorization = port.authorization; // initial HTTP Authorization header
+          var remoteURI = port.remoteURI; // ex: "tcp:194.43.12.5:80"
+
+          // handle client messages
+          port.onmessage = function handleMessage(msgEvent) {
+              // send a message to a specific client
+              port.postMessage(message);
+          }
+      };
+
+      // send basic message to all connected clients
+      webSocketServer.send(message);
+
+      webSocketServer.onmessage = function (msgEvent) {
+        // global handling of client message
+
+        var origin = msgEvent.origin; // check same origin or CORS access
+        var cookies = msgEvent.cookies; // initial HTTP cookies
+        var authorization = msgEvent.authorization; // initial HTTP Authorization header
+        var remoteURI = msgEvent.remoteURI; // ex: "tcp:194.43.12.5:80"
+      };
+      </pre>
+      <dl title="[Constructor (DOMString url, optional DOMString protocol)] interface WebSocketServer : EventTarget" class="idl">
+        <dt>readonly attribute DOMString url</dt>
+		<dd></dd>
+
+		<dt>[ready state]const unsigned short CONNECTING = 0</dt>
+		<dd>The connection has not yet been established.</dd>
+
+		<dt>const unsigned short OPEN = 1</dt>
+		<dd>The WebSocket connection is established and communication is possible.</dd>
+
+		<dt>const unsigned short CLOSING = 2</dt>
+		<dd>The connection is going through the closing handshake, or the close() method has been 
+		  invoked.</dd>
+
+		<dt>const unsigned short CLOSED = 3</dt>
+		<dd>The connection has been closed or could not be opened.</dd>
+
+		<dt>readonly attribute unsigned short readyState</dt>
+		<dd>
+		  <p>The <dfn><code>readyState</code></dfn> attribute represents the state of the connection. It can have the 
+		    constant defined values</p>
+		</dd>
+
+		<dt>readonly attribute unsigned long bufferedAmount</dt>
+		<dd>
+		  <p>The <dfn><code>bufferedAmount</code></dfn> attribute must return the number of bytes of
+		    application data (UTF-8 text and binary data) that have been queued  using send() but 
+		    that, as of the last time the event loop started  executing a task, had not yet been 
+		    transmitted to the network. (This thus includes any text sent during the execution of 
+		    the  current task, regardless of whether the user agent is able to  transmit text 
+		    asynchronously with script execution.) This does not  include framing overhead incurred
+		    by the protocol, or buffering  done by the operating system or network hardware.
+		    If the connection  is closed, this attribute's value will only increase with each call 
+		    to the <dfn><code>send()</code></dfn> method (the number does not reset to zero once the
+		    connection closes).</p>
+		</dd>
+
+		<dt>[networking]attribute EventHandler onopen</dt>
+		<dd>TO BE DONE</dd>
+
+		// networking
+		<dt>attribute EventHandler onconnect</dt>
+		<dd>TO BE DONE</dd>
+		
+		<dt>attribute EventHandler onerror</dt>
+		<dd>TO BE DONE</dd>
+
+		<dt>attribute EventHandler onclose</dt>
+		<dd>TO BE DONE</dd>
+
+		<dt>readonly attribute DOMString extensions</dt>
+		<dd>TO BE DONE</dd>
+
+		<dt>readonly attribute DOMString protocol</dt>
+		<dd>
+		  <p>The <dfn><code>protocol</code></dfn> attribute must initially return the empty string. 
+		    After the WebSocket connection is established, its value might  change, as defined 
+		    below.</p>
+		  <p>The <dfn><code>protocol</code></dfn> attribute returns the subprotocol selected by the 
+		    server, if any. It can be used in conjunction with the array  form of the constructor's 
+		    second argument to perform subprotocol negotiation.</p>
+		</dd>
+
+		<dt>void close()</dt>
+		<dd>
+          <p>Closes the Web socket. A closed Web socket can not be used any more.</p> 
+        </dd>
+		
+        <dt>[messaging]attribute EventHandler onmessage</dt>
+        <dd>mm</dd>
+
+        <dt>attribute DOMString binaryType</dt>
+        <dd>
+          <p>When a WebSocket object is created, its binaryType IDL attribute must 
+            be set to the string "blob". On getting, it must return the last value 
+            it was set to. On setting, if the new value is either the string "blob" 
+            or the string "arraybuffer", then set the IDL attribute to this new 
+            value. Otherwise, throw a SyntaxError exception.</p>
+        </dd>
+
+        <dt>void send(ArrayBufferView data)</dt>
+        <dd>        
+          <p>Sends data on the given UDP socket to the given address and port.</p>          
+          <p>If remoteAddress and remotePort arguments are not given or null the 
+             destination is the default address and port given by the UDPSocket 
+             constructor's options argument's <code>remoteAddress</code> and 
+             <code>remotePort</code> fields.</p>       
+        
+          <dl class='parameters'>
+             <dt>(DOMString or Blob or ArrayBuffer or ArrayBufferView) data</dt>
+             <dd>
+               The data to write in one of the alternative representations as
+               stated below:
+               <ul>
+                 <li> Represented as a sequence of Unicode characters. [[!UNICODE]].
+                 <li> As raw data represented by the Blob object. [[!FILE-API]] 
+                 <li> Represented as an ArrayBuffer object. [[!TYPED-ARRAYS]]
+                 <li> Represented by the section of the buffer described by the 
+                      ArrayBuffer object that the ArrayBufferView object references.
+                      [[!TYPED-ARRAYS]].    
+               </ul>           
+             </dd>
+          </dl>
+        </dd>
+	  </dl>
+   </section> 
+    
     
     <section class='appendix'>
       <h2>Acknowledgements</h2>
