@@ -233,36 +233,47 @@
 		    If the connection  is closed, this attribute's value will only increase with each call 
 		    to the <dfn><code>send()</code></dfn> method (the number does not reset to zero once the
 		    connection closes).</p>
-		    
-		  <p class="issue">As <dfn><code>WebSocketServer</code></dfn> can be connected to multiple sockets, this property 
-		  should also be at the <dfn><code>port</code></dfn> level and depend on each socket related 
-		  <dfn><code>port.postMessage()</code></dfn> method</p>
 		</dd>
 
 		<dt>[networking]attribute EventHandler onopen</dt>
-		<dd>TO BE DONE</dd>
+		<dd>
+		  <p>Event handler that corresponds to the <dfn><code>open</code></dfn> event, which is 
+		  fired when the socket is open and ready to receive connection attempts from clients. If 
+		  the creation of the server socket fails the error event will be fired instead.</p>
+		</dd>
 
 		// networking
 		<dt>attribute EventHandler onconnect</dt>
-		<dd>TO BE DONE</dd>
+		<dd>
+		  <p>Event handler that corresponds to the <dfn><code>connect</code></dfn> event, which is 
+		    fired repeatedly and asynchronously after the <dfn><code>WebSocketServer</code></dfn> 
+		    object has been created, every time an incoming connection attempt on the specified URI
+		    has been  accepted.</p>
+		</dd>
 		
 		<dt>attribute EventHandler onerror</dt>
-		<dd>TO BE DONE</dd>
+		<dd>
+		  <p>Event handler that corresponds to the <dfn><code>error</code></dfn> event, which is 
+		  fired when there is an error on the server socket. The data attribute of the event passed
+		  to the onerror handler will have a description of the kind of error.</p>
+		</dd>
 
 		<dt>attribute EventHandler onclose</dt>
-		<dd>TO BE DONE</dd>
+		<dd>
+		  <p class="issue">TBD: Coming from the <dfn><code>WebSocket</code></dfn> interface. To be 
+		  specified if required</p>
+		</dd>
 
 		<dt>readonly attribute DOMString extensions</dt>
-		<dd>TO BE DONE</dd>
+		<dd>
+		  <p class="issue">TBD: Coming from the <dfn><code>WebSocket</code></dfn> interface. To be 
+		  specified if required</p>
+		</dd>
 
 		<dt>readonly attribute DOMString protocol</dt>
 		<dd>
-		  <p>The <dfn><code>protocol</code></dfn> attribute must initially return the empty string. 
-		    After the WebSocket connection is established, its value might  change, as defined 
-		    below.</p>
-		  <p>The <dfn><code>protocol</code></dfn> attribute returns the subprotocol selected by the 
-		    server, if any. It can be used in conjunction with the array  form of the constructor's 
-		    second argument to perform subprotocol negotiation.</p>
+		  <p class="issue">TBD: Coming from the <dfn><code>WebSocket</code></dfn> interface. To be 
+		  specified if required</p>
 		</dd>
 
 		<dt>void close()</dt>
@@ -271,7 +282,9 @@
         </dd>
 		
         <dt>[messaging]attribute EventHandler onmessage</dt>
-        <dd>mm</dd>
+        <dd>
+          <p>Event handler that corresponds to the <dfn><code>message</code></dfn> event, which is 
+            fired repeatedly and asynchronously after the TCPServerSocket object has been created, every time there is an error on an incoming connection attempt. The data attribute of the event passed to the onconnecterror handler will have a description of the kind of error.</dd>
 
         <dt>attribute DOMString binaryType</dt>
         <dd>
