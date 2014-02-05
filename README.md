@@ -16,7 +16,35 @@ This specification reuse concepts and content from the following W3C recommendat
 In Short, the proposed `WebSocketServer` interface looks like the `WebSocket`interface but messaging behave with the `SharedWorker` port mechanism.
 
 
-##Intefaces##
+##How to use?##
+
+###Dedicated Socket Workers###
+
+```JavaScript
+var webSocketMetaData = self.webSocket;
+
+self.onmessage = function (msgEvent) {
+	self.postMessage(message);
+};
+
+```
+
+###Shared Socket Workers###
+```JavaScript
+
+self.onconnect = function handleClient(event) {
+	var port = event.ports[0];
+	var webSocketMetaData = event.webSocket;
+
+	// handle client messages
+	port.onmessage = function handleMessage(msgEvent) {
+		// send a message to a specific client
+		port.postMessage(message);
+	}
+};
+```
+
+##Interfaces##
 
 ```JavaScript
 Interface WebSocketServer {
@@ -58,36 +86,7 @@ Interface WebSocketMeta {
 }
 ```
 
-##How to use?##
-
-###Dedicated Socket Workers###
-
-```JavaScript
-var webSocketMetaData = self.webSocket;
-
-self.onmessage = function (msgEvent) {
-	self.postMessage(message);
-};
-
-```
-
-###Shared Socket Workers###
-```JavaScript
-
-self.onconnect = function handleClient(event) {
-	var port = event.ports[0];
-	var webSocketMetaData = event.webSocket;
-
-	// handle client messages
-	port.onmessage = function handleMessage(msgEvent) {
-		// send a message to a specific client
-		port.postMessage(message);
-	}
-};
-```
-
-The optionnal `serverID` parameter allows to work with the same WebSocketServer reference from any worker or iframe, as well as from any thread in multi-threaded SSJS implementation.
-
+It is possible to connect to WebSocket SharedWorkers using the standard SharedWorker constructor with the same ID. In this situation the event parameter of the 'onconnect' handler won't have the specific "webSocket" property
 
 ##How to contribute?##
 
