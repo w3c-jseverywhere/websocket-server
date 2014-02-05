@@ -16,18 +16,67 @@ This specification reuse concepts and content from the following W3C recommendat
 In Short, the proposed `WebSocketServer` interface looks like the `WebSocket`interface but messaging behave with the `SharedWorker` port mechanism.
 
 
-##How to use?##
+##Intefaces##
 
 ```JavaScript
-var webSocketServer = new WebSocketServer(urlToListen, serverID);
-webSocketServer.onconnect = function handleClient(event) {
-	var port = event.port[0];
+Interface WebSocketServer {
+	void addWebSocketHandler(String workerPath, String id, Boolean dedicatedOrShared)
+	void removeWebSocketHandler(String id)
+}
+```
 
-	// security related informations
-	var origin = port.origin; // check same origin or CORS access
-	var cookies = port.cookies; // initial HTTP cookies
-	var authorization = port.authorization; // initial HTTP Authorization header
-	var remoteURI = port.remoteURI; // ex: "tcp:194.43.12.5:80"
+```JavaScript
+Interface WebSocketWorkerScope: DedicatedWorkerGlobalScope {
+	readonly attribute WebSocketMeta webSocket
+}
+```
+
+```JavaScript
+Interface WebSocketSharedWorkerScope: SharedWorkerGlobalScope {
+}
+```
+
+```JavaScript
+Interface WebSocketMeta {
+
+  readonly attribute DOMString url;
+
+  // ready state
+  const unsigned short CONNECTING = 0;
+  const unsigned short OPEN = 1;
+  const unsigned short CLOSING = 2;
+  const unsigned short CLOSED = 3;
+  readonly attribute unsigned short readyState;
+  readonly attribute unsigned long bufferedAmount;
+
+  // networking
+  readonly attribute DOMString extensions;
+  readonly attribute DOMString protocol;
+
+  // messaging
+           attribute DOMString binaryType;
+}
+```
+
+##How to use?##
+
+###Dedicated Socket Workers###
+
+```JavaScript
+var webSocketMetaData = self.webSocket;
+
+self.onmessage = function (msgEvent) {
+	self.postMessage(message);
+};
+
+```
+
+###Shared Socket Workers###
+```JavaScript
+
+self.onconnect = function handleClient(event) {
+	var port = event.ports[0];
+	var webSocketMetaData = event.webSocket;
 
 	// handle client messages
 	port.onmessage = function handleMessage(msgEvent) {
@@ -35,19 +84,6 @@ webSocketServer.onconnect = function handleClient(event) {
 		port.postMessage(message);
 	}
 };
-
-// send basic message to all connected clients
-webSocketServer.send(message);
-
-webSocketServer.onmessage = function (msgEvent) {
-	// global handling of client message
-
-	var origin = msgEvent.origin; // check same origin or CORS access
-	var cookies = msgEvent.cookies; // initial HTTP cookies
-	var authorization = msgEvent.authorization; // initial HTTP Authorization header
-	var remoteURI = msgEvent.remoteURI; // ex: "tcp:194.43.12.5:80"
-};
-
 ```
 
 The optionnal `serverID` parameter allows to work with the same WebSocketServer reference from any worker or iframe, as well as from any thread in multi-threaded SSJS implementation.
